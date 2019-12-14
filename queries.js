@@ -1,4 +1,6 @@
 const Pool = require('pg').Pool
+const dotenv = require('dotenv').config()
+
 const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -17,7 +19,7 @@ const getUsers = (req, res) => {
 }
 
 const getUserByID = (req, res) => {
-    const userID = parseInt(request.params.userID)
+    const userID = parseInt(req.params.userID)
     pool.query('SELECT * FROM users WHERE uID = $1', [userID], (err, results) => {
 	if (err) {
 	    throw err
