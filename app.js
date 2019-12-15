@@ -20,6 +20,8 @@ const proposalRoutes = require('./api/routes/proposals');
 const voteRoutes = require('./api/routes/votes');
 const eventRoutes = require('./api/routes/events');
 const attenderRoutes = require('./api/routes/attenders');
+const forumpostRoutes = require('./api/routes/forumposts');
+const commentRoutes = require('./api/routes/comments');
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -48,6 +50,8 @@ app.use('/proposals', proposalRoutes);
 app.use('/votes', voteRoutes);
 app.use('/events', eventRoutes);
 app.use('/attenders', attenderRoutes);
+app.use('/forumposts', forumpostRoutes);
+app.use('/comments', commentRoutes);
 
 // Not found errors for undefined routes
 app.use((req, res, next) => {

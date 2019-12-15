@@ -11,7 +11,7 @@ const Event = db.define('event', {
 		type: Sequelize.STRING
 	},
 	description: {
-		type: Sequelize.STRING
+		type: Sequelize.TEXT
 	},
 	date: {
 		type: Sequelize.DATE

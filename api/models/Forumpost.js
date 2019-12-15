@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 const db = require('../../config/database');
 
-const Proposal = db.define('proposal', {
-	pid: {
+const Forumpost = db.define('forumpost', {
+	fid: {
 		type: Sequelize.INTEGER,
 		primaryKey: true,
 		autoIncrement: true
@@ -13,23 +13,12 @@ const Proposal = db.define('proposal', {
 	description: {
 		type: Sequelize.TEXT
 	},
-	starttime: {
-		type: Sequelize.DATE
-	},
-	endtime: {
+	timestamp: {
 		type: Sequelize.DATE
 	},
 	uid: {
 		type: Sequelize.INTEGER
-	},
-	numyes: {
-		type: Sequelize.INTEGER,
-		defaultValue: 0
-	},
-	numno: {
-		type: Sequelize.INTEGER,
-		defaultValue: 0
 	}
 });
 
-module.exports = Proposal;
+module.exports = Forumpost;
