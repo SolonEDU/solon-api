@@ -14,6 +14,26 @@ router.get('/', checkAuth, (req, res, next) => {
 	});
 });
 
+router.get('/:eventID', checkAuth, (req, res, next) => {
+	const eventID = req.params.eventID;
+	Event.findOne({
+		where: {
+			eid: eventID
+		}
+	}).then(event => {
+		if (event == null) {
+			res.status(200).json({
+				message: `No event with eventID ${eventID}`
+			});
+		} else {
+			res.status(200).json({
+				message: `Event with eventID ${eventID} was fetched`,
+				event: event
+			});
+		}
+	});
+});
+
 router.post('/', checkAuth, (req, res, next) => {
 	Event.create({
 		title: req.body.title,
@@ -27,28 +47,17 @@ router.post('/', checkAuth, (req, res, next) => {
 	});
 });
 
-router.get('/:eventID', checkAuth, (req, res, next) => {
-	const eventID = req.params.eventID;
-	res.status(200).json({
-		message: 'You passed an ID',
-		id: eventID
-	});
-});
-
-router.patch('/:eventID', checkAuth, (req, res, next) => {
-	const eventID = req.params.eventID;
-	res.status(200).json({
-		message: 'Updated event!',
-		id: eventID
-	});
-});
-
 router.delete('/:eventID', checkAuth, (req, res, next) => {
 	const eventID = req.params.eventID;
-	res.status(200).json({
-		message: 'Deleted event!',
-		id: eventID
-	});
+	Event.destroy({
+		where: {
+			eid: eventID
+		}
+	}).then(
+		res.status(200).json({
+			message: `Event with eventID ${eventID} was deleted`
+		})
+	);
 });
 
 module.exports = router;
