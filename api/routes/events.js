@@ -4,60 +4,14 @@ const db = require('../../config/database');
 const Event = require('../models/Event');
 const checkAuth = require('../middleware/check-auth');
 
-router.get('/', checkAuth, (req, res, next) => {
-	Event.findAll().then(events => {
-		console.log(events);
-		res.status(200).json({
-			message: 'All events were fetched',
-			events: events
-		});
-	});
-});
+const EventsController = require('../controllers/events');
 
-router.get('/:eventID', checkAuth, (req, res, next) => {
-	const eventID = req.params.eventID;
-	Event.findOne({
-		where: {
-			eid: eventID
-		}
-	}).then(event => {
-		if (event == null) {
-			res.status(200).json({
-				message: `No event with eventID ${eventID}`
-			});
-		} else {
-			res.status(200).json({
-				message: `Event with eventID ${eventID} was fetched`,
-				event: event
-			});
-		}
-	});
-});
+router.get('/', checkAuth, EventsController.events_get_all);
 
-router.post('/', checkAuth, (req, res, next) => {
-	Event.create({
-		title: req.body.title,
-		description: req.body.description,
-		date: req.body.date
-	}).then(event => {
-		res.status(201).json({
-			message: 'Event was created',
-			createdEvent: event
-		});
-	});
-});
+router.get('/:eventID', EventsController.events_get_event);
 
-router.delete('/:eventID', checkAuth, (req, res, next) => {
-	const eventID = req.params.eventID;
-	Event.destroy({
-		where: {
-			eid: eventID
-		}
-	}).then(
-		res.status(200).json({
-			message: `Event with eventID ${eventID} was deleted`
-		})
-	);
-});
+router.post('/', checkAuth, EventsController.events_create_event);
+
+router.delete('/:eventID', checkAuth, EventsController.events_delete_event);
 
 module.exports = router;

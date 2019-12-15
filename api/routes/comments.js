@@ -4,60 +4,14 @@ const db = require('../../config/database');
 const Comment = require('../models/Comment');
 const checkAuth = require('../middleware/check-auth');
 
-router.get('/', checkAuth, (req, res, next) => {
-	Comment.findAll().then(comments => {
-		res.status(200).json({
-			message: 'All comments were fetched',
-			comments: comments
-		});
-	});
-});
+const CommentsController = require('../controllers/comments');
 
-router.get('/:commentID', checkAuth, (req, res, next) => {
-	const commentID = req.params.commentID;
-	Comment.findOne({
-		where: {
-			cid: commentID
-		}
-	}).then(comment => {
-		if (comment == null) {
-			res.status(200).json({
-				message: `No comment with commentID ${commentID}`
-			});
-		} else {
-			res.status(200).json({
-				message: `Comment with commentID ${commentID} was fetched`,
-				comment: comment
-			});
-		}
-	});
-});
+router.get('/', checkAuth, CommentsController.comments_get_all);
 
-router.post('/', checkAuth, (req, res, next) => {
-	Comment.create({
-		fid: req.body.fid,
-		content: req.body.content,
-		timestamp: req.body.timestamp,
-		uid: req.body.uid
-	}).then(comment => {
-		res.status(201).json({
-			message: 'Comment was created',
-			comment: comment
-		});
-	});
-});
+router.get('/:commentID', checkAuth, CommentsController.comments_get_comment);
 
-router.delete('/:commentID', checkAuth, (req, res, next) => {
-	const commentID = req.params.commentID;
-	Comment.destroy({
-		where: {
-			cid: commentID
-		}
-	}).then(
-		res.status(200).json({
-			message: `Comment with commentID ${commentID} was deleted`
-		})
-	);
-});
+router.post('/', checkAuth, CommentsController.comments_create_comment);
+
+router.delete('/:commentID', checkAuth, CommentsController.comments_get_all);
 
 module.exports = router;
