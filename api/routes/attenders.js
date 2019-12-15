@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../config/database');
-const Attender = require('../models/Attender');
 const checkAuth = require('../middleware/check-auth');
 
 const AttendersController = require('../controllers/attenders');

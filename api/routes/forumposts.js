@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../config/database');
-const Forumpost = require('../models/Forumpost');
 const checkAuth = require('../middleware/check-auth');
 
 const ForumpostsController = require('../controllers/forumposts');

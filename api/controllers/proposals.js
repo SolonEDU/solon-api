@@ -1,3 +1,4 @@
+const db = require('../../config/database');
 const Proposal = require('../models/Proposal');
 
 exports.proposals_get_all = (req, res, next) => {

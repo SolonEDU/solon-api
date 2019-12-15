@@ -1,3 +1,4 @@
+const db = require('../../config/database');
 const Vote = require('../models/Vote');
 
 exports.votes_get_all = (req, res, next) => {

@@ -1,3 +1,4 @@
+const db = require('../../config/database');
 const Attender = require('../models/Attender');
 
 exports.attenders_get_all = (req, res, next) => {

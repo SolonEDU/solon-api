@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../config/database');
-const Proposal = require('../models/Proposal');
 const checkAuth = require('../middleware/check-auth');
 
 const ProposalsController = require('../controllers/proposals');

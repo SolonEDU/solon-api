@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../config/database');
-const Comment = require('../models/Comment');
 const checkAuth = require('../middleware/check-auth');
 
 const CommentsController = require('../controllers/comments');

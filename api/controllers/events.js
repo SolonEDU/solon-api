@@ -1,3 +1,4 @@
+const db = require('../../config/database');
 const Event = require('../models/Event');
 
 exports.events_get_all = (req, res, next) => {

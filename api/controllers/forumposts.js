@@ -1,3 +1,4 @@
+const db = require('../../config/database');
 const Forumpost = require('../models/Forumpost');
 
 exports.forumposts_get_all = (req, res, next) => {

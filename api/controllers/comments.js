@@ -1,3 +1,4 @@
+const db = require('../../config/database');
 const Comment = require('../models/Comment');
 
 exports.comments_get_all = (req, res, next) => {
