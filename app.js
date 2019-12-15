@@ -17,6 +17,7 @@ db.authenticate()
 	});
 
 const proposalRoutes = require('./api/routes/proposals');
+const voteRoutes = require('./api/routes/votes');
 const eventRoutes = require('./api/routes/events');
 
 app.use(morgan('dev'));
@@ -43,6 +44,7 @@ app.get('/', (req, res) => {
 
 // Routes which should handle requests
 app.use('/proposals', proposalRoutes);
+app.use('/votes', voteRoutes);
 app.use('/events', eventRoutes);
 
 // Not found errors for undefined routes

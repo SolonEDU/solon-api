@@ -6,11 +6,30 @@ const checkAuth = require('../middleware/check-auth');
 
 router.get('/', checkAuth, (req, res, next) => {
 	Proposal.findAll().then(proposals => {
-		console.log(proposals);
 		res.status(200).json({
-			message: 'Proposals were fetched',
+			message: 'All proposals were fetched',
 			proposals: proposals
 		});
+	});
+});
+
+router.get('/:proposalID', checkAuth, (req, res, next) => {
+	const proposalID = req.params.proposalID;
+	Proposal.findOne({
+		where: {
+			pid: proposalID
+		}
+	}).then(proposal => {
+		if (proposal == null) {
+			res.status(200).json({
+				message: `No proposal with proposalID ${proposalID}`
+			});
+		} else {
+			res.status(200).json({
+				message: `Proposal with proposalID ${proposalID} was fetched`,
+				proposal: proposal
+			});
+		}
 	});
 });
 
@@ -24,33 +43,22 @@ router.post('/', checkAuth, (req, res, next) => {
 	}).then(proposal => {
 		res.status(201).json({
 			message: 'Proposal was created',
-			createdProposal: proposal
+			proposal: proposal
 		});
-	});
-});
-
-router.get('/:proposalID', checkAuth, (req, res, next) => {
-	const proposalID = req.params.proposalID;
-	res.status(200).json({
-		message: 'You passed an ID',
-		id: proposalID
-	});
-});
-
-router.patch('/:proposalID', checkAuth, (req, res, next) => {
-	const proposalID = req.params.proposalID;
-	res.status(200).json({
-		message: 'Updated proposal!',
-		id: proposalID
 	});
 });
 
 router.delete('/:proposalID', checkAuth, (req, res, next) => {
 	const proposalID = req.params.proposalID;
-	res.status(200).json({
-		message: 'Deleted proposal!',
-		id: proposalID
-	});
+	Proposal.destroy({
+		where: {
+			pid: proposalID
+		}
+	}).then(
+		res.status(200).json({
+			message: `Proposal with proposalID ${proposalID} was deleted`
+		})
+	);
 });
 
 module.exports = router;
