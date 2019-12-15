@@ -8,7 +8,7 @@ router.get('/', checkAuth, (req, res, next) => {
 	Event.findAll().then(events => {
 		console.log(events);
 		res.status(200).json({
-			message: 'Events were fetched',
+			message: 'All events were fetched',
 			events: events
 		});
 	});
