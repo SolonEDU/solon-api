@@ -19,7 +19,10 @@ exports.comments_get_comment = (req, res, next) => {
 	}).then(comment => {
 		if (comment == null) {
 			res.status(200).json({
-				message: `No comment with commentID ${commentID}`
+				message: 'Error',
+				error: {
+					errorMessage: `No comment with commentID ${commentID}`
+				}
 			});
 		} else {
 			res.status(200).json({

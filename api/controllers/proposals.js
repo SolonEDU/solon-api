@@ -19,7 +19,10 @@ exports.proposals_get_proposal = (req, res, next) => {
 	}).then(proposal => {
 		if (proposal == null) {
 			res.status(200).json({
-				message: `No proposal with proposalID ${proposalID}`
+				message: 'Error',
+				error: {
+					errorMessage: `No proposal with proposalID ${proposalID}`
+				}
 			});
 		} else {
 			res.status(200).json({

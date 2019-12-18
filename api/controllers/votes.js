@@ -21,7 +21,10 @@ exports.votes_get_vote = (req, res, next) => {
 	}).then(vote => {
 		if (vote == null) {
 			res.status(200).json({
-				message: `No vote for proposalID ${proposalID} by userID ${userID}`
+				message: 'Error',
+				error: {
+					errorMessage: `No vote for proposalID ${proposalID} by userID ${userID}`
+				}
 			});
 		} else {
 			res.status(200).json({

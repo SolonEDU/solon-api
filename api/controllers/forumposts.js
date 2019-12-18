@@ -19,7 +19,10 @@ exports.forumposts_get_forumpost = (req, res, next) => {
 	}).then(forumpost => {
 		if (forumpost == null) {
 			res.status(200).json({
-				message: `No forumpost with forumpostID ${forumpostID}`
+				message: 'Error',
+				error: {
+					errorMessage: `No forumpost with forumpostID ${forumpostID}`
+				}
 			});
 		} else {
 			res.status(200).json({
