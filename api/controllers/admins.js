@@ -14,7 +14,7 @@ exports.admins_login = (req, res, next) => {
 				if (correct) {
 					res.status(200).json({
 						message: `Admin was successfully logged in`,
-						adminid: admin.adminid
+						admin: admin
 					});
 				} else {
 					res.json({
