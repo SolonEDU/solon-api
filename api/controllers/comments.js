@@ -18,7 +18,7 @@ exports.comments_get_comment = (req, res, next) => {
 		}
 	}).then(comment => {
 		if (comment == null) {
-			res.status(200).json({
+			res.json({
 				message: 'Error',
 				error: {
 					errorMessage: `No comment with commentID ${commentID}`

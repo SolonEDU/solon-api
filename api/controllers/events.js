@@ -19,7 +19,7 @@ exports.events_get_event = (req, res, next) => {
 		}
 	}).then(event => {
 		if (event == null) {
-			res.status(200).json({
+			res.json({
 				message: 'Error',
 				error: {
 					errorMessage: `No event with eventID ${eventID}`

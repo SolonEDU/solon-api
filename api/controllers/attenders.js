@@ -20,7 +20,7 @@ exports.attenders_get_attender = (req, res, next) => {
 		}
 	}).then(attender => {
 		if (attender == null) {
-			res.status(200).json({
+			res.json({
 				message: 'Error',
 				error: {
 					errorMessage: `No attender for eventID ${eventID} by userID ${userID}`

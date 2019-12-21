@@ -16,6 +16,7 @@ db.authenticate()
 		console.error('Unable to connect to the database:', err);
 	});
 
+const userRoutes = require('./api/routes/users');
 const proposalRoutes = require('./api/routes/proposals');
 const voteRoutes = require('./api/routes/votes');
 const eventRoutes = require('./api/routes/events');
@@ -46,6 +47,7 @@ app.get('/', (req, res) => {
 });
 
 // Routes which should handle requests
+app.use('/users', userRoutes);
 app.use('/proposals', proposalRoutes);
 app.use('/votes', voteRoutes);
 app.use('/events', eventRoutes);
