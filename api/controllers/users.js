@@ -75,3 +75,16 @@ exports.users_register = (req, res, next) => {
 		});
 	}
 };
+
+exports.users_delete_user = (req, res, next) => {
+	const userID = req.params.userID;
+	User.destroy({
+		where: {
+			uid: userID
+		}
+	}).then(
+		res.status(200).json({
+			message: `User with userID ${userID} was deleted`
+		})
+	);
+};
