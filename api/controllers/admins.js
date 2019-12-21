@@ -3,6 +3,29 @@ const Admin = require('../models/Admin');
 const bcrypt = require('bcrypt');
 const validator = require('email-validator');
 
+exports.admins_get_admin = (req, res, next) => {
+	const adminID = req.params.adminID;
+	Admin.findOne({
+		where: {
+			adminid: adminID
+		}
+	}).then(admin => {
+		if (admin == null) {
+			res.json({
+				message: 'Error',
+				error: {
+					errorMessage: `No admin with adminID ${adminID}`
+				}
+			});
+		} else {
+			res.status(200).json({
+				message: `Admin with adminID ${adminID} was fetched`,
+				admin: admin
+			});
+		}
+	});
+};
+
 exports.admins_login = (req, res, next) => {
 	Admin.findOne({
 		where: {
