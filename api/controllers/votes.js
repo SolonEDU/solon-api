@@ -62,7 +62,7 @@ exports.votes_change_vote = (req, res, next) => {
 	).then(vote => {
 		res.status(200).json({
 			message: `Vote for proposalID ${proposalID} by userID ${userID} was updated`,
-			vote: vote
+			value: req.body.value
 		});
 	});
 };

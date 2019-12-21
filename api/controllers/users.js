@@ -76,6 +76,23 @@ exports.users_register = (req, res, next) => {
 	}
 };
 
+exports.users_change_language = (req, res, next) => {
+	const userID = req.body.uid;
+	User.update(
+		{ lang: req.body.lang },
+		{
+			where: {
+				uid: userID
+			}
+		}
+	).then(user => {
+		res.status(200).json({
+			message: `Language for user with userID ${userID} was updated`,
+			lang: req.body.lang
+		});
+	});
+};
+
 exports.users_delete_user = (req, res, next) => {
 	const userID = req.params.userID;
 	User.destroy({
