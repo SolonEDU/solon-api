@@ -2,7 +2,9 @@ const db = require('../../config/database');
 const Proposal = require('../models/Proposal');
 
 exports.proposals_get_all = (req, res, next) => {
-	Proposal.findAll().then(proposals => {
+	Proposal.findAll({
+		order: [['starttime', 'DESC']]
+	}).then(proposals => {
 		res.status(200).json({
 			message: 'All proposals were fetched',
 			proposals: proposals
