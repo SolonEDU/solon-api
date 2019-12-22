@@ -12,4 +12,6 @@ router.post('/', checkAuth, VotesController.votes_create_vote);
 
 router.patch('/', checkAuth, VotesController.votes_change_vote);
 
+router.delete('/:voteID', checkAuth, VotesController.votes_delete_vote);
+
 module.exports = router;

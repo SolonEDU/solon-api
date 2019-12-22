@@ -36,6 +36,7 @@ exports.votes_get_vote = (req, res, next) => {
 };
 
 exports.votes_create_vote = (req, res, next) => {
+	// TODO update proposal numyes or numno
 	Vote.create({
 		pid: req.body.pid,
 		uid: req.body.uid,
@@ -49,6 +50,7 @@ exports.votes_create_vote = (req, res, next) => {
 };
 
 exports.votes_change_vote = (req, res, next) => {
+	// TODO update proposal numyes or numno
 	const proposalID = req.body.pid;
 	const userID = req.body.uid;
 	Vote.update(
@@ -65,4 +67,17 @@ exports.votes_change_vote = (req, res, next) => {
 			value: req.body.value
 		});
 	});
+};
+
+exports.votes_delete_vote = (req, res, next) => {
+	const voteID = req.params.voteID;
+	Vote.destroy({
+		where: {
+			vid: voteID
+		}
+	}).then(
+		res.status(200).json({
+			message: `Vote with voteID ${voteID} was deleted`
+		})
+	);
 };
