@@ -37,36 +37,54 @@ exports.votes_get_vote = (req, res, next) => {
 };
 
 exports.votes_create_vote = (req, res, next) => {
+	const pid = req.body.pid;
+	const uid = req.body.uid;
 	const value = req.body.value;
-	if (value == 0) {
-		Proposal.increment(
-			{ numno: 1 },
-			{
-				where: {
-					pid: req.body.pid
-				}
-			}
-		);
-	}
-	if (value == 1) {
-		Proposal.increment(
-			{ numyes: 1 },
-			{
-				where: {
-					pid: req.body.pid
-				}
-			}
-		);
-	}
-	Vote.create({
-		pid: req.body.pid,
-		uid: req.body.uid,
-		value: value
+	Vote.findOne({
+		where: {
+			pid: pid,
+			uid: uid
+		}
 	}).then(vote => {
-		res.status(201).json({
-			message: 'Vote was created',
-			vote: vote
-		});
+		if (vote == null) {
+			if (value == 0) {
+				Proposal.increment(
+					{ numno: 1 },
+					{
+						where: {
+							pid: pid
+						}
+					}
+				);
+			}
+			if (value == 1) {
+				Proposal.increment(
+					{ numyes: 1 },
+					{
+						where: {
+							pid: pid
+						}
+					}
+				);
+			}
+			Vote.create({
+				pid: pid,
+				uid: uid,
+				value: value
+			}).then(vote => {
+				res.status(201).json({
+					message: 'Vote was created',
+					vote: vote
+				});
+			});
+		} else {
+			res.json({
+				message: 'Error',
+				error: {
+					errorMessage: `Vote for proposalID ${pid} by userID ${uid} already exists`
+				}
+			});
+		}
 	});
 };
 
