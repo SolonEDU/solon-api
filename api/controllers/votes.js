@@ -1,5 +1,6 @@
 const db = require('../../config/database');
 const Vote = require('../models/Vote');
+const Proposal = require('../models/Proposal');
 
 exports.votes_get_all = (req, res, next) => {
 	Vote.findAll().then(votes => {
@@ -36,11 +37,31 @@ exports.votes_get_vote = (req, res, next) => {
 };
 
 exports.votes_create_vote = (req, res, next) => {
-	// TODO update proposal numyes or numno
+	const value = req.body.value;
+	if (value == 0) {
+		Proposal.increment(
+			{ numno: 1 },
+			{
+				where: {
+					pid: req.body.pid
+				}
+			}
+		);
+	}
+	if (value == 1) {
+		Proposal.increment(
+			{ numyes: 1 },
+			{
+				where: {
+					pid: req.body.pid
+				}
+			}
+		);
+	}
 	Vote.create({
 		pid: req.body.pid,
 		uid: req.body.uid,
-		value: req.body.value
+		value: value
 	}).then(vote => {
 		res.status(201).json({
 			message: 'Vote was created',
@@ -50,11 +71,47 @@ exports.votes_create_vote = (req, res, next) => {
 };
 
 exports.votes_change_vote = (req, res, next) => {
-	// TODO update proposal numyes or numno
 	const proposalID = req.body.pid;
 	const userID = req.body.uid;
+	const value = req.body.value;
+	if (value == 0) {
+		Proposal.increment(
+			{ numno: 1 },
+			{
+				where: {
+					pid: req.body.pid
+				}
+			}
+		);
+		Proposal.decrement(
+			{ numyes: 1 },
+			{
+				where: {
+					pid: req.body.pid
+				}
+			}
+		);
+	}
+	if (value == 1) {
+		Proposal.increment(
+			{ numyes: 1 },
+			{
+				where: {
+					pid: req.body.pid
+				}
+			}
+		);
+		Proposal.decrement(
+			{ numno: 1 },
+			{
+				where: {
+					pid: req.body.pid
+				}
+			}
+		);
+	}
 	Vote.update(
-		{ value: req.body.value },
+		{ value: value },
 		{
 			where: {
 				pid: proposalID,
@@ -71,6 +128,32 @@ exports.votes_change_vote = (req, res, next) => {
 
 exports.votes_delete_vote = (req, res, next) => {
 	const voteID = req.params.voteID;
+	Vote.findOne({
+		where: {
+			vid: voteID
+		}
+	}).then(vote => {
+		if (vote.value == 0) {
+			Proposal.decrement(
+				{ numno: 1 },
+				{
+					where: {
+						pid: req.body.pid
+					}
+				}
+			);
+		}
+		if (vote.value == 1) {
+			Proposal.decrement(
+				{ numyes: 1 },
+				{
+					where: {
+						pid: req.body.pid
+					}
+				}
+			);
+		}
+	});
 	Vote.destroy({
 		where: {
 			vid: voteID
