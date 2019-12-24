@@ -3,12 +3,38 @@ const Vote = require('../models/Vote');
 const Proposal = require('../models/Proposal');
 
 exports.votes_get_all = (req, res, next) => {
-	Vote.findAll().then(votes => {
-		res.status(200).json({
-			message: 'All votes were fetched',
-			votes: votes
+	pid = req.query.pid;
+	uid = req.query.uid;
+	if (pid != null) {
+		Vote.findAll({
+			where: {
+				pid: pid
+			}
+		}).then(votes => {
+			res.status(200).json({
+				message: `All votes for proposal with proposalID ${pid} were fetched`,
+				votes: votes
+			});
 		});
-	});
+	} else if (uid != null) {
+		Vote.findAll({
+			where: {
+				uid: uid
+			}
+		}).then(votes => {
+			res.status(200).json({
+				message: `All votes created by user with userID ${uid} were fetched`,
+				votes: votes
+			});
+		});
+	} else {
+		Vote.findAll().then(votes => {
+			res.status(200).json({
+				message: 'All votes were fetched',
+				votes: votes
+			});
+		});
+	}
 };
 
 exports.votes_get_vote = (req, res, next) => {
