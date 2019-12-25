@@ -50,6 +50,14 @@ exports.attenders_get_attender = (req, res, next) => {
 };
 
 exports.attenders_create_attender = (req, res, next) => {
+	Event.increment(
+		{ numattenders: 1 },
+		{
+			where: {
+				eid: req.body.eid
+			}
+		}
+	);
 	Attender.create({
 		eid: req.body.eid,
 		uid: req.body.uid
@@ -64,6 +72,14 @@ exports.attenders_create_attender = (req, res, next) => {
 exports.attenders_delete_attender = (req, res, next) => {
 	const eventID = req.params.eventID;
 	const userID = req.params.userID;
+	Event.increment(
+		{ numattenders: 1 },
+		{
+			where: {
+				eid: eventID
+			}
+		}
+	);
 	Attender.destroy({
 		where: {
 			eid: eventID,
