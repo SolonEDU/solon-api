@@ -1,5 +1,6 @@
 const db = require('../../config/database');
 const Attender = require('../models/Attender');
+const Event = require('../models/Event');
 
 exports.attenders_get_all = (req, res, next) => {
 	eid = req.query.eid;
