@@ -2,12 +2,26 @@ const db = require('../../config/database');
 const Attender = require('../models/Attender');
 
 exports.attenders_get_all = (req, res, next) => {
-	Attender.findAll().then(attenders => {
-		res.status(200).json({
-			message: 'All attenders were fetched',
-			attenders: attenders
+	eid = req.query.eid;
+	if (eid != null) {
+		Attender.findAll({
+			where: {
+				eid: eid
+			}
+		}).then(attenders => {
+			res.status(200).json({
+				message: `All attenders for event with eventID ${eid} were fetched`,
+				attenders: attenders
+			});
 		});
-	});
+	} else {
+		Attender.findAll().then(attenders => {
+			res.status(200).json({
+				message: 'All attenders were fetched',
+				attenders: attenders
+			});
+		});
+	}
 };
 
 exports.attenders_get_attender = (req, res, next) => {
