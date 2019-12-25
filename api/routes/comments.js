@@ -8,6 +8,12 @@ router.get('/', checkAuth, CommentsController.comments_get_all);
 
 router.get('/:commentID', checkAuth, CommentsController.comments_get_comment);
 
+router.get(
+	'/forumpost/:forumpostID',
+	checkAuth,
+	CommentsController.comments_get_forumpostcomments
+);
+
 router.post('/', checkAuth, CommentsController.comments_create_comment);
 
 router.delete('/:commentID', checkAuth, CommentsController.comments_get_all);

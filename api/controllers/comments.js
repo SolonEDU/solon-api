@@ -33,6 +33,20 @@ exports.comments_get_comment = (req, res, next) => {
 	});
 };
 
+exports.comments_get_forumpostcomments = (req, res, next) => {
+	const forumpostID = req.params.forumpostID;
+	Comment.findAll({
+		where: {
+			fid: forumpostID
+		}
+	}).then(comments => {
+		res.status(200).json({
+			message: `All comments for forum post with forumpostID ${forumpostID} were fetched`,
+			comments: comments
+		});
+	});
+};
+
 exports.comments_create_comment = (req, res, next) => {
 	Comment.create({
 		fid: req.body.fid,
