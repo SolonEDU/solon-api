@@ -73,7 +73,7 @@ exports.attenders_create_attender = (req, res, next) => {
 exports.attenders_delete_attender = (req, res, next) => {
 	const eventID = req.params.eventID;
 	const userID = req.params.userID;
-	Event.increment(
+	Event.decrement(
 		{ numattenders: 1 },
 		{
 			where: {
