@@ -12,6 +12,30 @@ exports.users_get_all = (req, res, next) => {
 	});
 };
 
+exports.users_get_user = (req, res, next) => {
+	userID = req.params.userID;
+	User.findOne({
+		where: {
+			uid: userID
+		},
+		attributes: ['uid', 'firstname', 'lastname', 'email', 'lang']
+	}).then(user => {
+		if (user == null) {
+			res.json({
+				message: 'Error',
+				error: {
+					errorMessage: `No user with userID ${userID}`
+				}
+			});
+		} else {
+			res.status(200).json({
+				message: `User with userID ${userID} was fetched`,
+				user: user
+			});
+		}
+	});
+};
+
 exports.users_login = (req, res, next) => {
 	User.findOne({
 		where: {
