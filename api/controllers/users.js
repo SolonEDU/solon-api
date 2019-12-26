@@ -4,7 +4,9 @@ const bcrypt = require('bcrypt');
 const validator = require('email-validator');
 
 exports.users_get_all = (req, res, next) => {
-	User.findAll().then(users => {
+	User.findAll({
+		order: [['uid', 'ASC']]
+	}).then(users => {
 		res.status(200).json({
 			message: 'All users were fetched',
 			users: users
