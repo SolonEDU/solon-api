@@ -36,10 +36,10 @@ exports.comments_get_comment = (req, res, next) => {
 exports.comments_get_forumpostcomments = (req, res, next) => {
 	const forumpostID = req.params.forumpostID;
 	Comment.findAll({
-		order: [['timestamp'], 'ASC'],
 		where: {
 			fid: forumpostID
-		}
+		},
+		order: [['timestamp'], 'ASC']
 	}).then(comments => {
 		res.status(200).json({
 			message: `All comments for forum post with forumpostID ${forumpostID} were fetched`,
