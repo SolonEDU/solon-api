@@ -2,7 +2,9 @@ const db = require('../../config/database');
 const Event = require('../models/Event');
 
 exports.events_get_all = (req, res, next) => {
-	Event.findAll().then(events => {
+	Event.findAll({
+		order: [['date', 'ASC']]
+	}).then(events => {
 		console.log(events);
 		res.status(200).json({
 			message: 'All events were fetched',
