@@ -3,7 +3,7 @@ const db = require('../../config/database');
 const Proposal = require('../models/Proposal');
 var googleTranslate = require('google-translate')(process.env.GOOGLE_CLOUD_KEY);
 
-const myTranslate = async (text, target) => {
+const translate = async (text, target) => {
     return new Promise((resolve, reject) => {
         googleTranslate.translate(text, target, (err, res) => {
             if (err) reject(err);
@@ -12,16 +12,27 @@ const myTranslate = async (text, target) => {
     });
 }
 
-const translate = async (text) => {
+const toTranslationMap = async (text) => {
     var translations = new Object();
-    const languages = ['en', 'zh-CN', 'zh-TW', 'bn', 'ko', 'ru', 'ja', 'uk'];
-    for (const language of languages) {
-        translations[language] = await myTranslate(text, language);
+    const langCodeMap = {
+        'en': 'en',
+        'zhcn': 'zh-CN',
+        'zhtw': 'zh-TW',
+        'bn': 'bn',
+        'ko': 'ko',
+        'ru': 'ru',
+        'ja': 'ja',
+        'uk': 'uk'
+    };
+    for (var key in langCodeMap) {
+        const translation = await translate(text, langCodeMap[key])
+        translations[key] = translation;
+        console.log(translations[key]);
     }
     return translations
 }
 
-translate('hello').then((translated) => {
+toTranslationMap('hello').then((translated) => {
     console.log(translated);
 });
 
@@ -112,8 +123,8 @@ exports.proposals_get_proposal = (req, res, next) => {
 };
 
 exports.proposals_create_proposal = async (req, res, next) => {
-	const translatedTitle = await translate(req.body.title);
-	const translatedDescription = await translate(req.body.description);
+	const translatedTitle = await toTranslationMap(req.body.title);
+	const translatedDescription = await toTranslationMap(req.body.description);
 	console.log(translatedTitle);
     Proposal.create({
         title: translatedTitle,
