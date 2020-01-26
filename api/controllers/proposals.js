@@ -29,7 +29,7 @@ const toTranslationMap = async (text) => {
         translations[key] = translation;
         console.log(translations[key]);
     }
-    return translations
+    return JSON.stringify(translations);
 }
 
 toTranslationMap('hello').then((translated) => {
