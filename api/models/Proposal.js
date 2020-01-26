@@ -8,10 +8,10 @@ const Proposal = db.define('proposal', {
 		autoIncrement: true
 	},
 	title: {
-		type: Sequelize.STRING
+		type: Sequelize.JSONB
 	},
 	description: {
-		type: Sequelize.TEXT
+		type: Sequelize.JSONB
 	},
 	starttime: {
 		type: Sequelize.DATE

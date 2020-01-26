@@ -8,10 +8,10 @@ const Forumpost = db.define('forumpost', {
 		autoIncrement: true
 	},
 	title: {
-		type: Sequelize.STRING
+		type: Sequelize.JSONB
 	},
 	description: {
-		type: Sequelize.TEXT
+		type: Sequelize.JSONB
 	},
 	timestamp: {
 		type: Sequelize.DATE

@@ -16,6 +16,7 @@
 		"dotenv": "^8.2.0",
 		"email-validator": "^2.0.4",
 		"express": "^4.17.1",
+		"google-translate": "^3.0.0",
 		"morgan": "^1.9.1",
 		"pg": "^7.14.0",
 		"sequelize": "^5.21.3"
