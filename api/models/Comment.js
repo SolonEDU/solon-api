@@ -11,7 +11,7 @@ const Comment = db.define('comment', {
 		type: Sequelize.INTEGER
 	},
 	content: {
-		type: Sequelize.TEXT
+		type: Sequelize.JSONB
 	},
 	timestamp: {
 		type: Sequelize.DATE

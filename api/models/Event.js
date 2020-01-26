@@ -8,10 +8,10 @@ const Event = db.define('event', {
 		autoIncrement: true
 	},
 	title: {
-		type: Sequelize.STRING
+		type: Sequelize.JSONB
 	},
 	description: {
-		type: Sequelize.TEXT
+		type: Sequelize.JSONB
 	},
 	date: {
 		type: Sequelize.DATE
