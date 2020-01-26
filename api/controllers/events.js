@@ -1,5 +1,6 @@
 const db = require('../../config/database');
 const Event = require('../models/Event');
+const translate = require('../middleware/translate');
 
 exports.events_get_all = (req, res, next) => {
 	Event.findAll({
@@ -36,10 +37,17 @@ exports.events_get_event = (req, res, next) => {
 	});
 };
 
-exports.events_create_event = (req, res, next) => {
+exports.events_create_event = async (req, res, next) => {
+    let translatedTitle, translatedDescription;
+    try {
+        translatedTitle = await translate(req.body.title);
+        translatedDescription = await translate(req.body.description);
+    } catch (e) {
+        console.log(e);
+    }
 	Event.create({
-		title: req.body.title,
-		description: req.body.description,
+		title: translatedTitle,
+		description: translatedDescription,
 		date: req.body.date
 	}).then(event => {
 		res.status(201).json({
