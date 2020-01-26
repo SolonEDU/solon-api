@@ -3,57 +3,79 @@ const db = require('../../config/database');
 const Proposal = require('../models/Proposal');
 var googleTranslate = require('google-translate')(process.env.GOOGLE_CLOUD_KEY);
 
-translate = source => {
-    var translations = new Object();
-    googleTranslate.translate(source, 'en', function(err, translation) {
-        translations.en = translation.translatedText;
-        googleTranslate.translate(source, 'zh-CN', function(err, translation) {
-            translations.zhcn = translation.translatedText;
-            googleTranslate.translate(source, 'zh-TW', function(
-                err,
-                translation
-            ) {
-                translations.zhtw = translation.translatedText;
-                googleTranslate.translate(source, 'bn', function(
-                    err,
-                    translation
-                ) {
-                    translations.bn = translation.translatedText;
-                    googleTranslate.translate(source, 'ko', function(
-                        err,
-                        translation
-                    ) {
-                        translations.ko = translation.translatedText;
-                        googleTranslate.translate(source, 'ru', function(
-                            err,
-                            translation
-                        ) {
-                            translations.ru = translation.translatedText;
-                            googleTranslate.translate(source, 'ja', function(
-                                err,
-                                translation
-                            ) {
-                                translations.ja = translation.translatedText;
-                                googleTranslate.translate(
-                                    source,
-                                    'uk',
-                                    function(err, translation) {
-                                        translations.uk =
-                                            translation.translatedText;
-                                        var translated = JSON.stringify(
-                                            translations
-										);
-										return translated;
-                                    }
-                                );
-                            });
-                        });
-                    });
-                });
-            });
+const myTranslate = async (text, target) => {
+    return new Promise((resolve, reject) => {
+        googleTranslate.translate(text, target, (err, res) => {
+            if (err) reject(err);
+            else resolve(res.translatedText);
         });
     });
-};
+}
+
+const translate = async (text) => {
+    var translations = new Object();
+    const languages = ['en', 'zh-CN', 'zh-TW', 'bn', 'ko', 'ru', 'ja', 'uk'];
+    for (const language of languages) {
+        translations[language] = await myTranslate(text, language);
+    }
+    return translations
+}
+
+translate('hello').then((translated) => {
+    console.log(translated);
+});
+
+// translate = source => {
+//     var translations = new Object();
+//     googleTranslate.translate(source, 'en', function(err, translation) {
+//         translations.en = translation.translatedText;
+//         googleTranslate.translate(source, 'zh-CN', function(err, translation) {
+//             translations.zhcn = translation.translatedText;
+//             googleTranslate.translate(source, 'zh-TW', function(
+//                 err,
+//                 translation
+//             ) {
+//                 translations.zhtw = translation.translatedText;
+//                 googleTranslate.translate(source, 'bn', function(
+//                     err,
+//                     translation
+//                 ) {
+//                     translations.bn = translation.translatedText;
+//                     googleTranslate.translate(source, 'ko', function(
+//                         err,
+//                         translation
+//                     ) {
+//                         translations.ko = translation.translatedText;
+//                         googleTranslate.translate(source, 'ru', function(
+//                             err,
+//                             translation
+//                         ) {
+//                             translations.ru = translation.translatedText;
+//                             googleTranslate.translate(source, 'ja', function(
+//                                 err,
+//                                 translation
+//                             ) {
+//                                 translations.ja = translation.translatedText;
+//                                 googleTranslate.translate(
+//                                     source,
+//                                     'uk',
+//                                     function(err, translation) {
+//                                         translations.uk =
+//                                             translation.translatedText;
+//                                         var translated = JSON.stringify(
+//                                             translations
+// 										);
+// 										return translated;
+//                                     }
+//                                 );
+//                             });
+//                         });
+//                     });
+//                 });
+//             });
+//         });
+//     });
+// };
 
 exports.proposals_get_all = (req, res, next) => {
     Proposal.findAll({
