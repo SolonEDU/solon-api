@@ -13,7 +13,7 @@ const translate = async (text, target) => {
 };
 
 const toTranslationMap = async text => {
-  var translations = new Object();
+  let translations = new Object();
   const langCodeMap = {
     en: "en",
     zhcn: "zh-CN",
@@ -24,7 +24,7 @@ const toTranslationMap = async text => {
     ja: "ja",
     uk: "uk"
   };
-  for (var key in langCodeMap) {
+  for (let key in langCodeMap) {
     const translation = await translate(text, langCodeMap[key]);
     translations[key] = translation;
     console.log(translations[key]);
@@ -123,7 +123,7 @@ exports.proposals_get_proposal = (req, res, next) => {
 };
 
 exports.proposals_create_proposal = async (req, res, next) => {
-  var translatedTitle, translatedDescription;
+  let translatedTitle, translatedDescription;
   try {
     translatedTitle = await toTranslationMap(req.body.title);
     translatedDescription = await toTranslationMap(req.body.description);
