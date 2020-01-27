@@ -47,10 +47,16 @@ exports.comments_get_forumpostcomments = (req, res, next) => {
 	});
 };
 
-exports.comments_create_comment = (req, res, next) => {
+exports.comments_create_comment = async (req, res, next) => {
+	let translatedContent;
+	try {
+		translatedContent = await translatedContent(req.body.content);
+	} catch(e) {
+		console.log(e);
+	}
 	Comment.create({
 		fid: req.body.fid,
-		content: req.body.content,
+		content: translatedContent,
 		timestamp: req.body.timestamp,
 		uid: req.body.uid
 	}).then(comment => {

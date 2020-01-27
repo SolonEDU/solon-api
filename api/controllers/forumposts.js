@@ -33,10 +33,17 @@ exports.forumposts_get_forumpost = (req, res, next) => {
     });
 };
 
-exports.forumposts_create_forumpost = (req, res, next) => {
+exports.forumposts_create_forumpost = async (req, res, next) => {
+    let translatedTitle, translatedDescription;
+    try {
+        translatedTitle = await translate(req.body.title);
+        translatedDescription = await translate(req.body.description);
+    } catch (e) {
+        console.log(e);
+    }
     Forumpost.create({
-        title: req.body.title,
-        description: req.body.description,
+        title: translatedTitle,
+        description: translatedDescription,
         timestamp: req.body.timestamp,
         uid: req.body.uid
     }).then(forumpost => {
