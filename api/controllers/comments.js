@@ -1,5 +1,6 @@
 const db = require('../../config/database');
 const Comment = require('../models/Comment');
+const translate = require('../middleware/translate');
 
 exports.comments_get_all = (req, res, next) => {
 	Comment.findAll().then(comments => {
@@ -50,7 +51,7 @@ exports.comments_get_forumpostcomments = (req, res, next) => {
 exports.comments_create_comment = async (req, res, next) => {
 	let translatedContent;
 	try {
-		translatedContent = await translatedContent(req.body.content);
+		translatedContent = await translate(req.body.content);
 	} catch(e) {
 		console.log(e);
 	}
