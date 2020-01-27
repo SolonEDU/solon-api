@@ -1,5 +1,6 @@
 const db = require('../../config/database');
 const Forumpost = require('../models/Forumpost');
+const translate = require('../middleware/translate');
 
 exports.forumposts_get_all = (req, res, next) => {
     Forumpost.findAll().then(forumposts => {
@@ -41,6 +42,8 @@ exports.forumposts_create_forumpost = async (req, res, next) => {
     } catch (e) {
         console.log(e);
     }
+    console.log(translatedTitle);
+    console.log(translatedDescription);
     Forumpost.create({
         title: translatedTitle,
         description: translatedDescription,
