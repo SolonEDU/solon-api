@@ -3,38 +3,80 @@ const Event = require('../models/Event');
 const translate = require('../middleware/translate');
 
 exports.events_get_all = (req, res, next) => {
-	Event.findAll({
-		order: [['date', 'ASC']]
-	}).then(events => {
-		console.log(events);
-		res.status(200).json({
-			message: 'All events were fetched',
-			events: events
-		});
-	});
+    const sort = req.query.sort_by;
+    if (sort == 'numattenders.asc') {
+        Event.findAll({
+            order: [['numattenders', 'ASC']]
+        }).then(events => {
+            console.log(events);
+            res.status(200).json({
+                message:
+                    'All events were fetched in order of numattenders ascending',
+                events: events
+            });
+        });
+    } else if (sort == 'numattenders.desc') {
+        Event.findAll({
+            order: [['numattenders', 'DESC']]
+        }).then(events => {
+            console.log(events);
+            res.status(200).json({
+                message:
+                    'All events were fetched in order of numattenders descending',
+                events: events
+            });
+        });
+    } else if (sort == 'date.asc') {
+        Event.findAll({
+            order: [['date', 'ASC']]
+        }).then(events => {
+            console.log(events);
+            res.status(200).json({
+                message: 'All events were fetched in order of date ascending',
+                events: events
+            });
+        });
+    } else if (sort == 'date.desc') {
+        Event.findAll({
+            order: [['date', 'DESC']]
+        }).then(events => {
+            console.log(events);
+            res.status(200).json({
+                message: 'All events were fetched in order of date descending',
+                events: events
+            });
+        });
+    } else {
+        res.json({
+            message: 'Error',
+            error: {
+                errorMessage: `Invalid or no sort_by query string`
+            }
+        });
+    }
 };
 
 exports.events_get_event = (req, res, next) => {
-	const eventID = req.params.eventID;
-	Event.findOne({
-		where: {
-			eid: eventID
-		}
-	}).then(event => {
-		if (event == null) {
-			res.json({
-				message: 'Error',
-				error: {
-					errorMessage: `No event with eventID ${eventID}`
-				}
-			});
-		} else {
-			res.status(200).json({
-				message: `Event with eventID ${eventID} was fetched`,
-				event: event
-			});
-		}
-	});
+    const eventID = req.params.eventID;
+    Event.findOne({
+        where: {
+            eid: eventID
+        }
+    }).then(event => {
+        if (event == null) {
+            res.json({
+                message: 'Error',
+                error: {
+                    errorMessage: `No event with eventID ${eventID}`
+                }
+            });
+        } else {
+            res.status(200).json({
+                message: `Event with eventID ${eventID} was fetched`,
+                event: event
+            });
+        }
+    });
 };
 
 exports.events_create_event = async (req, res, next) => {
@@ -45,27 +87,27 @@ exports.events_create_event = async (req, res, next) => {
     } catch (e) {
         console.log(e);
     }
-	Event.create({
-		title: translatedTitle,
-		description: translatedDescription,
-		date: req.body.date
-	}).then(event => {
-		res.status(201).json({
-			message: 'Event was created',
-			createdEvent: event
-		});
-	});
+    Event.create({
+        title: translatedTitle,
+        description: translatedDescription,
+        date: req.body.date
+    }).then(event => {
+        res.status(201).json({
+            message: 'Event was created',
+            createdEvent: event
+        });
+    });
 };
 
 exports.events_delete_event = (req, res, next) => {
-	const eventID = req.params.eventID;
-	Event.destroy({
-		where: {
-			eid: eventID
-		}
-	}).then(
-		res.status(200).json({
-			message: `Event with eventID ${eventID} was deleted`
-		})
-	);
+    const eventID = req.params.eventID;
+    Event.destroy({
+        where: {
+            eid: eventID
+        }
+    }).then(
+        res.status(200).json({
+            message: `Event with eventID ${eventID} was deleted`
+        })
+    );
 };

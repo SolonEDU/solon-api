@@ -3,12 +3,51 @@ const Forumpost = require('../models/Forumpost');
 const translate = require('../middleware/translate');
 
 exports.forumposts_get_all = (req, res, next) => {
-    Forumpost.findAll().then(forumposts => {
-        res.status(200).json({
-            message: 'All forumposts were fetched',
-            forumposts: forumposts
+    const sort = req.query.sort_by;
+    if (sort == 'timestamp.asc') {
+        Forumpost.findAll({
+            order: [['timestamp', 'ASC']]
+        }).then(forumposts => {
+            res.status(200).json({
+                message: 'All forumposts were fetched in order of timestamp ascending',
+                forumposts: forumposts
+            });
         });
-    });
+    } else if (sort == 'timestamp.desc') {
+        Forumpost.findAll({
+            order: [['timestamp', 'DESC']]
+        }).then(forumposts => {
+            res.status(200).json({
+                message: 'All forumposts were fetched in order of timestamp descending',
+                forumposts: forumposts
+            });
+        });
+    } else if (sort == 'numcomments.asc') {
+        Forumpost.findAll({
+            order: [['numcomments', 'ASC']]
+        }).then(forumposts => {
+            res.status(200).json({
+                message: 'All forumposts were fetched in order of numcomments ascending',
+                forumposts: forumposts
+            });
+        });
+    } else if (sort == 'numcomments.desc') {
+        Forumpost.findAll({
+            order: [['numcomments', 'DESC']]
+        }).then(forumposts => {
+            res.status(200).json({
+                message: 'All forumposts were fetched in order of numcomments descending',
+                forumposts: forumposts
+            });
+        });
+    } else {
+        res.json({
+            message: 'Error',
+            error: {
+                errorMessage: `Invalid or no sort_by query string`
+            }
+        });
+    }
 };
 
 exports.forumposts_get_forumpost = (req, res, next) => {
