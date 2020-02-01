@@ -86,6 +86,7 @@ exports.forumposts_create_forumpost = async (req, res, next) => {
     Forumpost.create({
         title: translatedTitle,
         description: translatedDescription,
+        numcomments: 0,
         timestamp: req.body.timestamp,
         uid: req.body.uid
     }).then(forumpost => {

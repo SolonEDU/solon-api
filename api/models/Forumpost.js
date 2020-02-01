@@ -13,6 +13,9 @@ const Forumpost = db.define('forumpost', {
 	description: {
 		type: Sequelize.JSONB
 	},
+	numcomments: {
+		type: Sequelize.INTEGER
+	},
 	timestamp: {
 		type: Sequelize.DATE
 	},
