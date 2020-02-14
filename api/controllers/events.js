@@ -1,58 +1,87 @@
 const db = require('../../config/database');
 const Event = require('../models/Event');
 const translate = require('../middleware/translate');
+const { Op } = require('sequelize');
 
 exports.events_get_all = (req, res, next) => {
-    const sort = req.query.sort_by;
-    if (sort == 'numattenders.asc') {
+    const q = req.query.q;
+    if (q) {
         Event.findAll({
-            order: [['numattenders', 'ASC']]
+            where: {
+                [Op.or]: [
+                    {
+                        entitle: {
+                            [Op.like]: '%' + q + '%'
+                        }
+                    },
+                    {
+                        endescription: {
+                            [Op.like]: '%' + q + '%'
+                        }
+                    }
+                ]
+            }
         }).then(events => {
-            console.log(events);
             res.status(200).json({
                 message:
-                    'All events were fetched in order of numattenders ascending',
-                events: events
-            });
-        });
-    } else if (sort == 'numattenders.desc') {
-        Event.findAll({
-            order: [['numattenders', 'DESC']]
-        }).then(events => {
-            console.log(events);
-            res.status(200).json({
-                message:
-                    'All events were fetched in order of numattenders descending',
-                events: events
-            });
-        });
-    } else if (sort == 'date.asc') {
-        Event.findAll({
-            order: [['date', 'ASC']]
-        }).then(events => {
-            console.log(events);
-            res.status(200).json({
-                message: 'All events were fetched in order of date ascending',
-                events: events
-            });
-        });
-    } else if (sort == 'date.desc') {
-        Event.findAll({
-            order: [['date', 'DESC']]
-        }).then(events => {
-            console.log(events);
-            res.status(200).json({
-                message: 'All events were fetched in order of date descending',
+                    'All events with search query in title or description were fetched',
                 events: events
             });
         });
     } else {
-        res.json({
-            message: 'Error',
-            error: {
-                errorMessage: `Invalid or no sort_by query string`
-            }
-        });
+        const sort = req.query.sort_by;
+        if (sort == 'numattenders.asc') {
+            Event.findAll({
+                order: [['numattenders', 'ASC']]
+            }).then(events => {
+                console.log(events);
+                res.status(200).json({
+                    message:
+                        'All events were fetched in order of numattenders ascending',
+                    events: events
+                });
+            });
+        } else if (sort == 'numattenders.desc') {
+            Event.findAll({
+                order: [['numattenders', 'DESC']]
+            }).then(events => {
+                console.log(events);
+                res.status(200).json({
+                    message:
+                        'All events were fetched in order of numattenders descending',
+                    events: events
+                });
+            });
+        } else if (sort == 'date.asc') {
+            Event.findAll({
+                order: [['date', 'ASC']]
+            }).then(events => {
+                console.log(events);
+                res.status(200).json({
+                    message:
+                        'All events were fetched in order of date ascending',
+                    events: events
+                });
+            });
+        } else if (sort == 'date.desc') {
+            Event.findAll({
+                order: [['date', 'DESC']]
+            }).then(events => {
+                console.log(events);
+                res.status(200).json({
+                    message:
+                        'All events were fetched in order of date descending',
+                    events: events
+                });
+            });
+        } else {
+            res.json({
+                message: 'Error',
+                error: {
+                    errorMessage: `Invalid or no sort_by query string`
+                }
+            });
+        }
     }
 };
 
@@ -90,7 +119,9 @@ exports.events_create_event = async (req, res, next) => {
     Event.create({
         title: translatedTitle,
         description: translatedDescription,
-        date: req.body.date
+        date: req.body.date,
+        entitle: JSON.parse(translatedTitle)['en'],
+        endescription: JSON.parse(translatedDescription)['en']
     }).then(event => {
         res.status(201).json({
             message: 'Event was created',

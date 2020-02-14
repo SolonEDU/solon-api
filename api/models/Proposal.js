@@ -29,6 +29,16 @@ const Proposal = db.define('proposal', {
 	numno: {
 		type: Sequelize.INTEGER,
 		defaultValue: 0
+	},
+	numvotes: {
+		type: Sequelize.INTEGER,
+		defaultValue: 0
+	},
+	entitle: {
+		type: Sequelize.TEXT
+	},
+	endescription: {
+		type: Sequelize.TEXT
 	}
 });
 

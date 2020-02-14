@@ -1,52 +1,83 @@
 const db = require('../../config/database');
 const Forumpost = require('../models/Forumpost');
 const translate = require('../middleware/translate');
+const { Op } = require('sequelize');
 
 exports.forumposts_get_all = (req, res, next) => {
-    const sort = req.query.sort_by;
-    if (sort == 'timestamp.asc') {
-        Forumpost.findAll({
-            order: [['timestamp', 'ASC']]
-        }).then(forumposts => {
+    const q = req.query.q;
+    if (q) {
+        Proposal.findAll({
+            where: {
+                [Op.or]: [
+                    {
+                        entitle: {
+                            [Op.like]: '%' + q + '%'
+                        }
+                    },
+                    {
+                        endescription: {
+                            [Op.like]: '%' + q + '%'
+                        }
+                    }
+                ]
+            }
+        }).then(proposals => {
             res.status(200).json({
-                message: 'All forumposts were fetched in order of timestamp ascending',
-                forumposts: forumposts
-            });
-        });
-    } else if (sort == 'timestamp.desc') {
-        Forumpost.findAll({
-            order: [['timestamp', 'DESC']]
-        }).then(forumposts => {
-            res.status(200).json({
-                message: 'All forumposts were fetched in order of timestamp descending',
-                forumposts: forumposts
-            });
-        });
-    } else if (sort == 'numcomments.asc') {
-        Forumpost.findAll({
-            order: [['numcomments', 'ASC']]
-        }).then(forumposts => {
-            res.status(200).json({
-                message: 'All forumposts were fetched in order of numcomments ascending',
-                forumposts: forumposts
-            });
-        });
-    } else if (sort == 'numcomments.desc') {
-        Forumpost.findAll({
-            order: [['numcomments', 'DESC']]
-        }).then(forumposts => {
-            res.status(200).json({
-                message: 'All forumposts were fetched in order of numcomments descending',
-                forumposts: forumposts
+                message:
+                    'All proposals with search query in title or description were fetched',
+                proposals: proposals
             });
         });
     } else {
-        res.json({
-            message: 'Error',
-            error: {
-                errorMessage: `Invalid or no sort_by query string`
-            }
-        });
+        const sort = req.query.sort_by;
+        if (sort == 'timestamp.asc') {
+            Forumpost.findAll({
+                order: [['timestamp', 'ASC']]
+            }).then(forumposts => {
+                res.status(200).json({
+                    message:
+                        'All forumposts were fetched in order of timestamp ascending',
+                    forumposts: forumposts
+                });
+            });
+        } else if (sort == 'timestamp.desc') {
+            Forumpost.findAll({
+                order: [['timestamp', 'DESC']]
+            }).then(forumposts => {
+                res.status(200).json({
+                    message:
+                        'All forumposts were fetched in order of timestamp descending',
+                    forumposts: forumposts
+                });
+            });
+        } else if (sort == 'numcomments.asc') {
+            Forumpost.findAll({
+                order: [['numcomments', 'ASC']]
+            }).then(forumposts => {
+                res.status(200).json({
+                    message:
+                        'All forumposts were fetched in order of numcomments ascending',
+                    forumposts: forumposts
+                });
+            });
+        } else if (sort == 'numcomments.desc') {
+            Forumpost.findAll({
+                order: [['numcomments', 'DESC']]
+            }).then(forumposts => {
+                res.status(200).json({
+                    message:
+                        'All forumposts were fetched in order of numcomments descending',
+                    forumposts: forumposts
+                });
+            });
+        } else {
+            res.json({
+                message: 'Error',
+                error: {
+                    errorMessage: `Invalid or no sort_by query string`
+                }
+            });
+        }
     }
 };
 

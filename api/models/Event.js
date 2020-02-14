@@ -23,6 +23,12 @@ const Event = db.define('event', {
 	numattenders: {
 		type: Sequelize.INTEGER,
 		defaultValue: 0
+	},
+	entitle: {
+		type: Sequelize.TEXT
+	},
+	endescription: {
+		type: Sequelize.TEXT
 	}
 });
 

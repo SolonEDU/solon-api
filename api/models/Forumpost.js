@@ -21,6 +21,12 @@ const Forumpost = db.define('forumpost', {
 	},
 	uid: {
 		type: Sequelize.INTEGER
+	},
+	entitle: {
+		type: Sequelize.TEXT
+	},
+	endescription: {
+		type: Sequelize.TEXT
 	}
 });
 
