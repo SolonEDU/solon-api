@@ -75,7 +75,7 @@ exports.votes_create_vote = (req, res, next) => {
 		if (vote == null) {
 			if (value == 0) {
 				Proposal.increment(
-					{ numno: 1 },
+					{ numno: 1, numvotes: 1 },
 					{
 						where: {
 							pid: pid
@@ -85,7 +85,7 @@ exports.votes_create_vote = (req, res, next) => {
 			}
 			if (value == 1) {
 				Proposal.increment(
-					{ numyes: 1 },
+					{ numyes: 1, numvotes: 1 },
 					{
 						where: {
 							pid: pid
@@ -179,7 +179,7 @@ exports.votes_delete_vote = (req, res, next) => {
 	}).then(vote => {
 		if (vote.value == 0) {
 			Proposal.decrement(
-				{ numno: 1 },
+				{ numno: 1, numvotes: 1 },
 				{
 					where: {
 						pid: req.body.pid
@@ -189,7 +189,7 @@ exports.votes_delete_vote = (req, res, next) => {
 		}
 		if (vote.value == 1) {
 			Proposal.decrement(
-				{ numyes: 1 },
+				{ numyes: 1, numvotes: 1 },
 				{
 					where: {
 						pid: req.body.pid

@@ -34,8 +34,7 @@ exports.proposals_get_all = (req, res, next) => {
         if (sort == 'numvotes.asc') {
             Proposal.findAll({
                 order: [
-                    ['numyes', 'ASC'],
-                    ['numno', 'ASC']
+                    ['numvotes', 'ASC']
                 ]
             }).then(proposals => {
                 res.status(200).json({
@@ -47,8 +46,7 @@ exports.proposals_get_all = (req, res, next) => {
         } else if (sort == 'numvotes.desc') {
             Proposal.findAll({
                 order: [
-                    ['numyes', 'DESC'],
-                    ['numno', 'DESC']
+                    ['numvotes', 'DESC']
                 ]
             }).then(proposals => {
                 res.status(200).json({
