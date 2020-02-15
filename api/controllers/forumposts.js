@@ -6,26 +6,26 @@ const { Op } = require('sequelize');
 exports.forumposts_get_all = (req, res, next) => {
     const q = req.query.q;
     if (q) {
-        Proposal.findAll({
+        Forumpost.findAll({
             where: {
                 [Op.or]: [
                     {
                         entitle: {
-                            [Op.like]: '%' + q + '%'
+                            [Op.iLike]: '%' + q + '%'
                         }
                     },
                     {
                         endescription: {
-                            [Op.like]: '%' + q + '%'
+                            [Op.iLike]: '%' + q + '%'
                         }
                     }
                 ]
             }
-        }).then(proposals => {
+        }).then(forumposts => {
             res.status(200).json({
                 message:
-                    'All proposals with search query in title or description were fetched',
-                proposals: proposals
+                    'All forumposts with search query in title or description were fetched',
+                forumposts: forumposts
             });
         });
     } else {
@@ -119,7 +119,9 @@ exports.forumposts_create_forumpost = async (req, res, next) => {
         description: translatedDescription,
         numcomments: 0,
         timestamp: req.body.timestamp,
-        uid: req.body.uid
+        uid: req.body.uid,
+        entitle: JSON.parse(translatedTitle)['en'],
+        endescription: JSON.parse(translatedDescription)['en']
     }).then(forumpost => {
         res.status(201).json({
             message: 'Forumpost was created',

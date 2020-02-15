@@ -12,12 +12,12 @@ exports.proposals_get_all = (req, res, next) => {
                 [Op.or]: [
                     {
                         entitle: {
-                            [Op.like]: '%' + q + '%'
+                            [Op.iLike]: '%' + q + '%'
                         }
                     },
                     {
                         endescription: {
-                            [Op.like]: '%' + q + '%'
+                            [Op.iLike]: '%' + q + '%'
                         }
                     }
                 ]
