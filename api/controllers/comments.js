@@ -80,14 +80,20 @@ exports.comments_create_comment = async (req, res, next) => {
 
 exports.comments_delete_comment = (req, res, next) => {
     const commentID = req.params.commentID;
-    Forumpost.decrement(
-        { numcomments: 1 },
-        {
-            where: {
-                fid: req.body.fid
-            }
+    Comment.findOne({
+        where: {
+            cid: commentID
         }
-    );
+    }).then(comment => {
+        Forumpost.decrement(
+            { numcomments: 1 },
+            {
+                where: {
+                    fid: comment.fid
+                }
+            }
+        )
+    });
     Comment.destroy({
         where: {
             cid: commentID
