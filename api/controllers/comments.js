@@ -84,23 +84,26 @@ exports.comments_delete_comment = (req, res, next) => {
         where: {
             cid: commentID
         }
-    }).then(comment => {
-        Forumpost.decrement(
-            { numcomments: 1 },
-            {
-                where: {
-                    fid: comment.fid
+    })
+        .then(comment => {
+            Forumpost.decrement(
+                { numcomments: 1 },
+                {
+                    where: {
+                        fid: comment.fid
+                    }
                 }
-            }
-        )
-    });
-    Comment.destroy({
-        where: {
-            cid: commentID
-        }
-    }).then(
-        res.status(200).json({
-            message: `Comment with commentID ${commentID} was deleted`
+            );
         })
-    );
+        .then(
+            Comment.destroy({
+                where: {
+                    cid: commentID
+                }
+            }).then(
+                res.status(200).json({
+                    message: `Comment with commentID ${commentID} was deleted`
+                })
+            )
+        );
 };
