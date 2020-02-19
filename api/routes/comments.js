@@ -16,6 +16,6 @@ router.get(
 
 router.post('/', checkAuth, CommentsController.comments_create_comment);
 
-router.delete('/:commentID', checkAuth, CommentsController.comments_get_all);
+router.delete('/:commentID', checkAuth, CommentsController.comments_delete_comment);
 
 module.exports = router;
